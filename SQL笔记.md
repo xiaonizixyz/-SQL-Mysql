@@ -1,3 +1,5 @@
+
+
 # **一、工具环境安装**
 
 链接：https://pan.baidu.com/s/1b5WEtBrHhKoG76ZB3C8dEg 
@@ -227,56 +229,61 @@ order by score desc
   limit 3 offset 9   -- limit 3 表示最多显示3条
   ;
   ```
-  
+
 - 分页的关键
-  
-    分页的关键在于首先要确定每页需要显示的结果数量`pageSize`，然后根据当前页的索引`pageIndex`(从1开始)，确定`limit`和`offset`应该设置的值
-  
-    - `limit`总是设定为`pageSize`
-    - `offset`计算公式为`pageSize * (pageIndex - 1)`
-    
+
+  分页的关键在于首先要确定每页需要显示的结果数量`pageSize`，然后根据当前页的索引`pageIndex`(从1开始)，确定`limit`和`offset`应该设置的值
+
+  - `limit`总是设定为`pageSize`
+  - `offset`计算公式为`pageSize * (pageIndex - 1)`
+
   - <font color=red>注意</font>
-  
+
     - `offset`是可选的，如果只`写limit 15`，其相当于`limit 15 offset 0`
     - 在MySQL中，`limit 15 offset 30`还可简写成`limit 30, 15`
-    - 使用`limit <M> offser <N>`分页时，随着`N`越来越大，查询效率也会越来越低
-  
-  ## **3.6 聚合查询**
-  
-  - 聚合查询
-  
-    SQL提供了一些函数快速实现了聚合查询。如统计一张数据库表总共有多少条记录，便可用`count()`来取
-  
-    ```sql
-    count(*) 查询所有列的行数
-    select count(*)
-    from students
-    ;
-    ```
-  
-  - 聚合函数
-  
-    除了`count()`函数外，`SQL`还提供了以下聚合函数
-  
-    | 函数 | 说明                                 |
-    | ---- | ------------------------------------ |
-    | sum  | 计算某列的合计值，该列必须为数值类型 |
-    | avg  | 计算某列的平均值，该列必须为数值类型 |
-    | max  | 计算某列的最大值                     |
-    | min  | 计算某列的最小值                     |
-  
-    <font color=red>注：</font>`max()`和`min()`函数并不局限于数值类型。如果是字符类型，`max()`和`min()`会返回排序最后和排序最前的字符
-  
-    例：使用聚合函数计算男生的平均成绩
-  
-    ```sql
-    select avg(acore) average
-    from students
-    where gender = 'M'
-    ;
-    ```
-  
-  - <font color=red>注意</font>
-  
-    如果聚合查询的`wherd`条件没有匹配到任何行，`count()`会返回0，而`sum()`、`avg()`、`max()`和`min()`会返回`null`
+    - 使用`limit <M> offser <N>`分页时，随着`N`越来越大，查询效率也会越来越
 
+## 3.6 聚合查询
+
+- 聚合查询
+
+  `SQL`提供了一些函数快速实现了聚合查询。如统计一张数据库表总共有多少条记录，便可用`count()`来取
+
+  ```sql
+  count(*) 查询所有列的行数
+  select count(*)
+  from students
+  ;
+  ```
+
+- 聚合函数
+
+  除了`count()`函数外，`SQL`还提供了以下聚合函数
+
+  | 函数 | 说明                                 |
+  | ---- | ------------------------------------ |
+  | sum  | 计算某列的合计值，该列必须为数值类型 |
+  | avg  | 计算某列的平均值，该列必须为数值类型 |
+  | max  | 计算某列的最大值                     |
+  | min  | 计算某列的最小值                     |
+
+  <font color=red>注：</font>`max()`和`min()`函数并不局限于数值类型。如果是字符类型，`max()`和`min()`会返回排序最后和排序最前的字符
+
+  例：使用聚合函数计算男生的平均成绩
+
+  ```sql
+  select avg(acore) average
+  from students
+  where gender = 'M'
+  ;
+  ```
+
+- <font color=red>注意</font>
+
+  如果聚合查询的`wherd`条件没有匹配到任何行，`count()`会返回0，而`sum()`、`avg()`、`max()`和`min()`会返回`null`
+
+## 3.7 多表查询
+
+- `select` 查询不但可以查询一张表，还可以从多张表中同时查询。查询多张表的语法为：`select * from <table1><table2>`。如同时从`students`表和`classes`表的笛卡儿积中查询数据可写为：`select * from students, classes;`
+
+- `from`子句给表设置别名的语法是`from <table1><别名1>,<table2><别名2>`，多表查询也可以添加`where`条件
